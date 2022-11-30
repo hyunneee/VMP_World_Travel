@@ -78,13 +78,13 @@ It can be confirmed that both images are detected clearly without additional cod
   <img width="452" alt="image" src="https://user-images.githubusercontent.com/82044319/204815084-82e5b51f-8cf2-4ccb-bdfb-6317daddc769.png">  
   When applied to this video, there was a part where chroma key was not applied. So We searched the green range in HSV once again. When the range of lower green was changed from [40, 40, 40] to [50,100, 100], it was found that it was well applied.  
 
-<img width="211" alt="image" src="https://user-images.githubusercontent.com/82044319/204816200-f880b1b7-2ff9-4e2a-962e-ef5e535c4cf8.png">in [40, 40, 40], the lower_green color is like this.  
-<img width="211" alt="image" src="https://user-images.githubusercontent.com/82044319/204816290-913a90a8-72fb-48a1-ad7c-38af80f27994.png">in [50,100,100], the lower_green color is like this.  
+  <img width="211" alt="image" src="https://user-images.githubusercontent.com/82044319/204816200-f880b1b7-2ff9-4e2a-962e-ef5e535c4cf8.png">in [40, 40, 40], the lower_green color is like this.  
+  <img width="211" alt="image" src="https://user-images.githubusercontent.com/82044319/204816290-913a90a8-72fb-48a1-ad7c-38af80f27994.png">in [50,100,100], the lower_green color is like this.  
 
-- Case3-3 Slider
+- Case3-3 Slider  
   <img width="452" alt="image" src="https://user-images.githubusercontent.com/82044319/204816416-23c26139-0f27-43f7-923d-4a8d4f075b09.png">
   <img width="452" alt="image" src="https://user-images.githubusercontent.com/82044319/204816440-edf2af81-4f77-403f-9009-caaccb62b0cf.png">  
-- Case3-4 Snow
+- Case3-4 Snow  
   <img width="452" alt="image" src="https://user-images.githubusercontent.com/82044319/204816481-ac5bc710-db01-40c2-9d85-1ac80ab1fec5.png">
   <img width="452" alt="image" src="https://user-images.githubusercontent.com/82044319/204816492-52199430-9909-476a-a8ce-2f910c5bfe4b.png">  
 ------
