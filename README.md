@@ -6,6 +6,8 @@ Team member : 20190365 김찬주, 20201043 김선경, 20211060 오서현
 # Project Purpose
 The purpose of this project is to implement chroma keys using opencv.
 
+--------
+
 # Algorithm for Chromakey
 1.	Import all necessary libraries (numpy, opencv etc)
 2.	Load the target image(or video) and background. (cv2.VideoCapture(), cv2.imread())
@@ -37,3 +39,56 @@ We researched two ways to apply a background image to a video using mask operati
 -	https://www.geeksforgeeks.org/replace-green-screen-using-opencv-python/  
 -	https://deep-learning-study.tistory.com/134  
 -	https://medium.com/fnplus/blue-or-green-screen-effect-with-open-cv-chroma-keying-94d4a6ab2743  
+
+--------
+# Experiment 
+To verify that our code runs well, we tried to experiment with the code through various input images. Images taken from a green background that can be found through research can be divided into three categories.  
+1. Source taken in real life  
+2. Source whose existing background was removed and green background was applied.  
+3. Various effects sources with a green background Image taken in where the background scene is of a unique color  
+Therefore, we tried to experiment with our code by selecting two images for each category.  
+
+## Source taken in real life  
+- Case1-1
+![image](https://user-images.githubusercontent.com/82044319/204814172-47f1c411-10ea-4a54-bfb2-d41146494313.png)  
+- Case1-2
+![image](https://user-images.githubusercontent.com/82044319/204814323-571fe49f-90c8-4b5d-b6cb-2218edb1fa24.png)  
+It can be confirmed that both images are detected clearly without additional code modification.  
+
+## Source whose existing background was removed and green/blue background was applied.  
+- Case2-1
+![image](https://user-images.githubusercontent.com/82044319/204814439-3145d182-a001-4f79-b4d6-2845dac67854.png)  
+- Case2-2  
+  <img width="452" alt="image" src="https://user-images.githubusercontent.com/82044319/204814554-ccce320c-8765-4279-bb88-c50176587829.png">  
+  <img width="298" alt="image" src="https://user-images.githubusercontent.com/82044319/204814568-86d2c2c9-45ff-4ee1-afe3-9cb35a073355.png">  
+  Change the blue range of HSV because blue, not green, must be removed.  
+  <img width="452" alt="image" src="https://user-images.githubusercontent.com/82044319/204814625-9a92d497-5271-48c5-bcb7-33eefd653ab1.png">  
+
+## Various effects sources with a green background Image taken in where the background scene is of a unique color   
+- Case3-1
+  ![image](https://user-images.githubusercontent.com/82044319/204814815-4bbf31a0-3e44-46fb-a95c-374ec6ed3501.png)  
+  It can be confirmed that both images are detected clearly without additional code modification.   
+- Case3-2  
+  <img width="452" alt="image" src="https://user-images.githubusercontent.com/82044319/204814938-8f50b8eb-b421-4f7f-8aa5-18dbca30c903.png">  
+  First Trial(lower_green = [40,40,40]   
+  <img width="452" alt="image" src="https://user-images.githubusercontent.com/82044319/204816038-e05b54e1-63b8-42da-be07-d0e9c8a741b9.png">  
+  When applied to this video, there was a part where chroma key was not applied. So We searched the green range in HSV once again. When the range of lower green was changed from [40, 40, 40] to [50,100, 100], it was found that it was well applied.  
+    
+  Second Trial(lower_green = [50,100,100])    
+  <img width="452" alt="image" src="https://user-images.githubusercontent.com/82044319/204815084-82e5b51f-8cf2-4ccb-bdfb-6317daddc769.png">  
+  When applied to this video, there was a part where chroma key was not applied. So We searched the green range in HSV once again. When the range of lower green was changed from [40, 40, 40] to [50,100, 100], it was found that it was well applied.  
+
+<img width="211" alt="image" src="https://user-images.githubusercontent.com/82044319/204816200-f880b1b7-2ff9-4e2a-962e-ef5e535c4cf8.png">in [40, 40, 40], the lower_green color is like this.  
+<img width="211" alt="image" src="https://user-images.githubusercontent.com/82044319/204816290-913a90a8-72fb-48a1-ad7c-38af80f27994.png">in [50,100,100], the lower_green color is like this.  
+
+- Case3-3 Slider
+  <img width="452" alt="image" src="https://user-images.githubusercontent.com/82044319/204816416-23c26139-0f27-43f7-923d-4a8d4f075b09.png">
+  <img width="452" alt="image" src="https://user-images.githubusercontent.com/82044319/204816440-edf2af81-4f77-403f-9009-caaccb62b0cf.png">  
+- Case3-4 Snow
+  <img width="452" alt="image" src="https://user-images.githubusercontent.com/82044319/204816481-ac5bc710-db01-40c2-9d85-1ac80ab1fec5.png">
+  <img width="452" alt="image" src="https://user-images.githubusercontent.com/82044319/204816492-52199430-9909-476a-a8ce-2f910c5bfe4b.png">  
+------
+
+
+
+
