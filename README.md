@@ -110,7 +110,72 @@ It can be confirmed that both images are detected clearly without additional cod
 
 ----------
 # Final Code   
+```python
+import cv2 as cv # opencv
+import numpy as np # numpy
+import sys # for terminal command
 
+# cammand : $ python chroma_key.py(argv[0])  input_video.mp4(argv[1])  background.png(argv[2]) output_video.mp4(argv[3])
 
+args = sys.argv[1:] # array in range(1,)
+target_v_dir = sys.argv[1] # green screen (target) video
+back_v_dir = sys.argv[2] # background video
+output_v = sys.argv[3] # output video name
+
+width , height = 1920, 1080 # set window size
+video = cv.VideoCapture(target_v_dir) 
+backv = cv.VideoCapture(back_v_dir)
+fps = video.get(cv.CAP_PROP_FPS)
+recorder = cv.VideoWriter(output_v,
+                                cv.VideoWriter_fourcc(*'MP4V'),
+                                fps,
+                                (width,height)) 
+
+while(1):
+    # Take each frame
+    load_video, frames = video.read()
+    load_back, b_frames = backv.read() 
+    
+    # resize the both videos
+    frames = cv.resize(frames, (1920, 1080)) 
+    b_frames = cv.resize(b_frames, (1920, 1080)) 
+    
+    # Convert BGR to HSV
+    hsv = cv.cvtColor(frames, cv.COLOR_BGR2HSV)
+
+    # define range of green color in HSV
+    lower_green = np.array([55, 50, 70])
+    upper_green = np.array([89, 255, 255])
+    # [89, 255, 255], [55, 50, 70] which is the proper green color(hsv) range in target video
+    mask = cv.inRange(hsv, lower_green, upper_green) # set mask
+    
+    # Bitwise-AND mask and original image
+    res = cv.bitwise_and(frames, frames, mask= mask)
+    f = frames - res 
+    f = np.where(f == 0, b_frames, f)
+    
+    cv.imshow('Chromakey_result',f) # show the result in window
+    recorder.write(f) # record result video
+    
+    if not load_video: #if video done, break
+        break                       
+    
+    if backv.get(cv.CAP_PROP_POS_FRAMES) == backv.get(cv.CAP_PROP_FRAME_COUNT): # if back done, restart
+        backv.set(cv.CAP_PROP_POS_FRAMES,0)
+
+    if cv.waitKey(1) == 27: # if pree esc, break
+        break
+    
+video.release()
+backv.release()
+recorder.release()
+cv.destroyAllWindows()
+```
+------
+# Final Result
+Green screen video  
+<img width="1440" alt="스크린샷 2022-12-01 오전 1 13 03" src="https://user-images.githubusercontent.com/82044319/204850150-a82e9a12-e5ca-4aa9-b166-717b71a96137.png">  
+Result video  
+<img width="1440" alt="스크린샷 2022-12-01 오전 1 13 26" src="https://user-images.githubusercontent.com/82044319/204850243-5b837084-ee4a-4edd-bea5-26ccc0b0c7b8.png">
 
 
