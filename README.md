@@ -8,20 +8,29 @@ The purpose of this project is to implement chroma keys using opencv.
 
 --------
 
-# Algorithm for Chromakey
+# Core Algorithm for Chromakey
 1.	Import all necessary libraries (numpy, opencv etc)
-2.	Load the target image(or video) and background. (cv2.VideoCapture(), cv2.imread())
-3.	Resize the images and the videos to the same size (cv2.resize())
-4.	Load the upper and lower BGR values of the green color. (np.array([B,G,R]))
-5.	Change the color from BGR to HSV. (cv2.cvtColor(image or frame, cv2.COLOR_BGR2HSV))
-6.	Apply the mask and then use bitwise_and Subtract bitwise_and from the original green screen image. (cv2.inRange(), cv2.bitwise_and())
-7.	Check for matrix value 0 after subtraction and replace it by the second image. (np.where())
-8.	You get the desired results. (cv2.imshow())
+2.  The code is executed along with the green screen image, the background image, and the output image at the terminal.  
+3.  It stores videos using cv2.VideoCapture, stores fps, and sets variables to record video using cv2.VideoWriter.  
 
-# pseudo code for the algorithm
+    #### In while loop  
+  4.	Load the target image(or video) and background. (cv2.VideoCapture(), cv2.imread())  
+  5.	Resize the images and the videos to the same size (cv2.resize())  
+  6.	Load the upper and lower BGR values of the green color. (np.array([B,G,R]))  
+  7.	Change the color from BGR to HSV. (cv2.cvtColor(image or frame, cv2.COLOR_BGR2HSV))  
+  8.	Apply the mask and then use bitwise_and Subtract bitwise_and from the original green screen image. (cv2.inRange(), cv2.bitwise_and())  
+  9.	Check for matrix value 0 after subtraction and replace it by the second image. (np.where())  
+  10. if target video(green screen video) were done, break.  
+  
+11. if background video were done, restart (cv2.CAP_PROP_POS_FRAMES, cv2.CAP_PROP_FRAME_COUNT)  
+
+12.	release every videos. (.release(), cv2.destroyAllWindows())  
+13. You get the desired results. (cv2.imshow())  
+
+# pseudo code for the Initial algorithm
 ![image](https://user-images.githubusercontent.com/82044319/204811704-4869b778-2ba3-4630-adcd-460bb077720c.png)
 
-# Description of the algorithm
+# Description of the Initial algorithm
 This is an algorithm for changing the background in a video (or image) through chroma-keying. To create a mask video, we will crop the background area of the video (taken on the green or blue screen) and change the background in this area.  
   
 The algorithm uses the numpy and opencv libraries. The original image (chroma-keying.mp4) is the video with a constant green background. In order to apply another video (road.mp4) as the background, the frame sizes of them must be the same. Therefore, the frame size is unified through cv2.resize(). (1920x1080)  
@@ -48,14 +57,14 @@ To verify that our code runs well, we tried to experiment with the code through 
 3. Various effects sources with a green background Image taken in where the background scene is of a unique color  
 Therefore, we tried to experiment with our code by selecting two images for each category.  
 
-## Source taken in real life  
+## 1. Source taken in real life  
 - Case1-1
 ![image](https://user-images.githubusercontent.com/82044319/204814172-47f1c411-10ea-4a54-bfb2-d41146494313.png)  
 - Case1-2
 ![image](https://user-images.githubusercontent.com/82044319/204814323-571fe49f-90c8-4b5d-b6cb-2218edb1fa24.png)  
 It can be confirmed that both images are detected clearly without additional code modification.  
 
-## Source whose existing background was removed and green/blue background was applied.  
+## 2. Source whose existing background was removed and green/blue background was applied.  
 - Case2-1
 ![image](https://user-images.githubusercontent.com/82044319/204814439-3145d182-a001-4f79-b4d6-2845dac67854.png)  
 - Case2-2  
@@ -64,7 +73,7 @@ It can be confirmed that both images are detected clearly without additional cod
   Change the blue range of HSV because blue, not green, must be removed.  
   <img width="452" alt="image" src="https://user-images.githubusercontent.com/82044319/204814625-9a92d497-5271-48c5-bcb7-33eefd653ab1.png">  
 
-## Various effects sources with a green background Image taken in where the background scene is of a unique color   
+## 3. Various effects sources with a green background Image taken in where the background scene is of a unique color   
 - Case3-1
   ![image](https://user-images.githubusercontent.com/82044319/204814815-4bbf31a0-3e44-46fb-a95c-374ec6ed3501.png)  
   It can be confirmed that both images are detected clearly without additional code modification.   
@@ -87,7 +96,20 @@ It can be confirmed that both images are detected clearly without additional cod
 - Case3-4 Snow  
   <img width="452" alt="image" src="https://user-images.githubusercontent.com/82044319/204816481-ac5bc710-db01-40c2-9d85-1ac80ab1fec5.png">
   <img width="452" alt="image" src="https://user-images.githubusercontent.com/82044319/204816492-52199430-9909-476a-a8ce-2f910c5bfe4b.png">  
-------
+--------
+# Problems in the process of project & Solution 
+- Initially, we used cv2.copyTo() in the process of chroma-keying through mask operations. The image and background were combined, but the boundary between the two images that were merged was not seen smooth. We could solve this problem by adjusting the value of lower_green and upper_green, but it was still not satisfactory. Therefore, after further investigation, we found and used the cv2.bitwise_and() function, which more naturally merges the image, so we solved the problem using this function.  
+
+- The code is played based on the background image, and the video ends when the background video ends not target video. The reason why this phenomenon occurred is that the lengths of the background video and the green screen video were different. So to solve this problem, we decided to put on a loop that plays again even after the background video is over.  
+
+  At this time, We use cv2.CAP_PROP_POS_FRAMES, cv2.CAP_PROP_FRAME_COUNT. The former is a variable that knows the current number of frames of a video, and the latter is a variable that counts the number of frames of the video. If these two numbers are the same, it means that the video is over, and at this time, the current number of frames was corrected to zero to perform an video loop.
+
+- there was a problem that the image was played slowly. The reason is that the number of frames in the image was different. Looking at the code, I found that the frames of the recorded image were not matched according to the number of frames of the image, and were fixed at 30 frames. Therefore, we modified this code. At this time, We use cv2.CAP_PROP_FPS that represent FPS of video.  
+
+- When conducting the experiment, the experiment was conducted by continuously changing the path of the videos, and We wanted to allow it to be determined at the terminal. For this, we used argv. argv is an array that stores characters entered based on the blanks in the terminal. In order to use this, sys was imported, and green screen video, background video, and result video were stored in order and set as variables.  
+
+----------
+# Final Code   
 
 
 
