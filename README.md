@@ -5,6 +5,23 @@ Team member : 20190365 김찬주, 20201043 김선경, 20211060 오서현
 
 # Project Purpose
 The purpose of this project is to implement chroma keys using opencv.
+# How to use vmp_travel Github repository
+0. readme.md  
+    Final Report  
+1. algorithm idea  
+    Algorithm search report uploaded successfully.  
+2. assets  
+    - Final_assets  
+        + Green screen file : door.mp4  
+        + Background screen file : bridge.mp4  
+        + Result file : result.mp4  
+    - case1 Source taken in real life  
+    - case2 Source whose existing background was removed and green background was applied.  
+    - case3 Various effects sources with a green background  
+3. python_code  
+    It's the code we worked on.  
+4. Report  
+    the reports so far.  
 
 --------
 
